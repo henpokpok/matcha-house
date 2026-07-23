@@ -1,43 +1,95 @@
-# Astro Starter Kit: Minimal
+# 🍵 Zenith Matcha (Minimalist Matcha House)
 
-```sh
-npm create astro@latest -- --template minimal
-```
+> A complete, highly responsive, and SEO-optimized web platform for the premium matcha brand **"Zenith Matcha"**, built with **Astro v7**, **Tailwind CSS v4**, and **TypeScript**.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+🌐 **Live Website**: [https://matcha-house.ponnpavitt.workers.dev/](https://matcha-house.ponnpavitt.workers.dev/)  
+📦 **GitHub Repository**: [https://github.com/henpokpok/matcha-house](https://github.com/henpokpok/matcha-house)
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## 📸 Production Verification & Metrics
+
+### 1. PageSpeed Insights Performance & SEO
+Achieved **100/100 SEO**, **100/100 Best Practices**, and **98/100 Accessibility** on mobile & desktop PageSpeed Insights audits.
+
+![PageSpeed Insights Audit](public/images/docs/pagespeed-insights.png)
+
+---
+
+### 2. Cloudflare Deployment Status
+Deploys automatically to Cloudflare Workers & Pages on every commit to `main`.
+
+![Cloudflare Deployments](public/images/docs/cloudflare-deployments.png)
+
+---
+
+### 3. Google Search Console & Sitemap Indexing
+Sitemap configured and submitted via `https://matcha-house.ponnpavitt.workers.dev/sitemap-index.xml`.
+
+![Google Search Console Sitemaps](public/images/docs/gsc-sitemaps.png)
+
+---
+
+### 4. Google Tag Manager (GTM) & Analytics Configuration
+
+Container ID: `GTM-MGVB6QLR` | Measurement ID: `G-D0JVJSBSHG`
+
+#### GTM Version 2 Published Summary
+![GTM Version Summary](public/images/docs/gtm-version-summary.png)
+
+#### GTM Tags Overview
+Configured GA4 Base Tag, GA4 Events (`generate_lead`, `line_click`), and Google Tag `G-D0JVJSBSHG`.
+![GTM Tags](public/images/docs/gtm-tags.png)
+
+#### GTM Triggers Overview
+Configured link click triggers (`Link - LINE Click`) and page view triggers (`PV - Contact Success`).
+![GTM Triggers](public/images/docs/gtm-triggers.png)
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+- **Core Framework**: [Astro v7](https://astro.build/) (Static Site Generation with Cloudflare Adapter)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) (Organic Minimalism Design Tokens)
+- **Content Engine**: Astro Content Collections API (`src/content.config.ts`)
+- **Typography**: Playfair Display (Serif Headings) & Plus Jakarta Sans (Body)
+- **SEO & Structured Data**: Dynamic Open Graph, Meta Keywords, and Schema.org JSON-LD
+
+---
+
+## 📁 Project Structure
 
 ```text
-/
+matcha-house/
 ├── public/
+│   ├── images/docs/           # Documentation Screenshots
+│   ├── robots.txt             # Search Engine Directives
+│   └── google*.html           # GSC Verification File
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/            # SEO, Header, Footer, Gallery, ProductCard
+│   ├── content/               # Products & Blog Content Collections (.md)
+│   ├── layouts/               # Layout.astro with GTM & GTag Scripts
+│   ├── pages/                 # Home, Catalog, Detail, Blog, Success Pages
+│   └── styles/                # global.css (Tailwind Tokens)
+├── content.config.ts          # Astro Content Schemas & Loaders
+├── astro.config.mjs           # Sitemap & Cloudflare Adapter Config
+└── tailwind.config.mjs        # Theme Specifications
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🧞 Local Development Commands
 
-Any static assets, like images, can be placed in the `public/` directory.
+```bash
+# Install dependencies
+npm install
 
-## 🧞 Commands
+# Start local development server
+npm run dev
 
-All commands are run from the root of the project, from a terminal:
+# Build production bundle
+npm run build
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Preview build locally
+npm run preview
+```
