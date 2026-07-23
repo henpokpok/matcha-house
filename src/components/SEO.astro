@@ -1,0 +1,99 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  ogImage?: string;
+  canonicalURL?: URL;
+  type?: 'website' | 'article' | 'product';
+  productSchema?: {
+    name: string;
+    description: string;
+    image: string;
+    price: number;
+    priceCurrency: string;
+    availability: string;
+  };
+}
+
+const {
+  title,
+  description,
+  keywords = 'Zenith Matcha, ชาเขียวญี่ปุ่น, ชาเขียวมัทฉะ ญี่ปุ่น, มัทฉะเกรดพิธีชงชา, อุปกรณ์ชงชาญี่ปุ่น, ผงชาเขียวมัทฉะ ออร์แกนิค 100%, ผงมัทฉะ ยี่ห้อไหนดี',
+  ogImage = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBKZMpvFSamlUCkCEyXqzBnKyqMTsNX_cMyLtpybBSYqtg0oJJPRYtp49odtU_mA9nnPuuqIbKKcBRGew38KdHwIDJQSenPCGucGFw4Bag1K--t4HmthvookSKj1C9taicQuW3zXFSnPEpti6YASHtgbOobMQrJprfHimghsjJG8yRdOY5a__jsHfsCQZaySe56veNQyl7uez3jXLB4rU3fDtPmFcMcnTwj_PCZYxk3Sny8mf7au4xv0A',
+  canonicalURL = Astro.url,
+  type = 'website',
+  productSchema
+} = Astro.props;
+
+// Generate JSON-LD schema
+let schemaJSON = '';
+if (productSchema) {
+  schemaJSON = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    'name': productSchema.name,
+    'description': productSchema.description,
+    'image': productSchema.image,
+    'offers': {
+      '@type': 'Offer',
+      'price': productSchema.price,
+      'priceCurrency': productSchema.priceCurrency,
+      'availability': productSchema.availability === 'InStock' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      'priceValidUntil': '2027-12-31',
+      'url': canonicalURL.toString(),
+    }
+  });
+} else if (type === 'article') {
+  schemaJSON = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    'headline': title,
+    'description': description,
+    'image': ogImage,
+    'url': canonicalURL.toString(),
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'Zenith Matcha',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://lh3.googleusercontent.com/aida-public/AB6AXuBKZMpvFSamlUCkCEyXqzBnKyqMTsNX_cMyLtpybBSYqtg0oJJPRYtp49odtU_mA9nnPuuqIbKKcBRGew38KdHwIDJQSenPCGucGFw4Bag1K--t4HmthvookSKj1C9taicQuW3zXFSnPEpti6YASHtgbOobMQrJprfHimghsjJG8yRdOY5a__jsHfsCQZaySe56veNQyl7uez3jXLB4rU3fDtPmFcMcnTwj_PCZYxk3Sny8mf7au4xv0A'
+      }
+    }
+  });
+} else {
+  schemaJSON = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': 'Zenith Matcha',
+    'url': canonicalURL.origin,
+    'description': description
+  });
+}
+---
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImage} />
+
+<!-- JSON-LD Schema -->
+<script type="application/ld+json" set:html={schemaJSON}></script>

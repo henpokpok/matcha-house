@@ -1,0 +1,138 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const blogPosts = await getCollection('blog');
+const sortedPosts = blogPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Featured post is how-to-choose-best-matcha-grade
+const featuredPost = sortedPosts.find(post => post.id === 'how-to-choose-best-matcha-grade') || sortedPosts[0];
+const otherPosts = sortedPosts.filter(post => post.id !== featuredPost.id);
+---
+
+<Layout
+  title="The Matcha Journal - Zenith Matcha (ผงมัทฉะ ยี่ห้อไหนดี)"
+  description="Explore the mindfulness, ritual, and health benefits of authentic Japanese matcha. Discover your perfect blend (ผงมัทฉะ ยี่ห้อไหนดี)."
+  keywords="ผงมัทฉะ ยี่ห้อไหนดี, Zenith Matcha, ชาเขียวญี่ปุ่น, ประโยชน์มัทฉะ, มัทฉะลาเต้"
+>
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-16 pb-section-gap">
+    <!-- Header Section -->
+    <header class="mb-section-gap text-center max-w-3xl mx-auto">
+      <p class="font-label-md text-label-md text-secondary mb-4 uppercase tracking-widest">Journal</p>
+      <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-6">
+        Wabi-sabi in every whisk.
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant">
+        Explore the mindfulness, ritual, and health benefits of authentic Japanese matcha. Discover your perfect blend (ผงมัทฉะ ยี่ห้อไหนดี).
+      </p>
+    </header>
+
+    <!-- Featured Article (Magazine Style) -->
+    {featuredPost && (
+      <section class="mb-section-gap">
+        <div class="group relative rounded-lg overflow-hidden bg-surface-container-low shadow-[0_20px_20px_-10px_rgba(27,28,28,0.05)] transition-all duration-300 hover:shadow-[0_25px_25px_-12px_rgba(27,28,28,0.08)]">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="h-[400px] md:h-[600px] relative overflow-hidden">
+              <a href={`/blog/${featuredPost.id}`} class="block w-full h-full">
+                <img 
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 rounded-l-lg md:rounded-none" 
+                  alt={featuredPost.data.altText} 
+                  src={featuredPost.data.mainImage}
+                />
+              </a>
+            </div>
+            <div class="p-8 md:p-16 flex flex-col justify-center">
+              <div class="inline-flex items-center space-x-2 mb-6">
+                <span class="bg-primary-fixed/20 text-primary px-3 py-1 rounded-full font-label-md text-xs uppercase tracking-wider">
+                  {featuredPost.data.category}
+                </span>
+                <span class="text-on-surface-variant font-label-md text-xs">{featuredPost.data.readTime}</span>
+              </div>
+              <a href={`/blog/${featuredPost.id}`} class="block group-hover:text-secondary transition-colors">
+                <h2 class="font-headline-md text-headline-md text-primary mb-6">
+                  {featuredPost.data.title}
+                </h2>
+              </a>
+              <p class="font-body-lg text-body-lg text-on-surface-variant mb-8 line-clamp-3">
+                {featuredPost.data.description}
+              </p>
+              <a class="inline-flex items-center text-primary font-label-md text-label-md border-b border-primary pb-1 self-start hover:text-secondary hover:border-secondary transition-colors" href={`/blog/${featuredPost.id}`}>
+                Read Article <span class="material-symbols-outlined ml-2 text-[16px]">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Article Grid -->
+    <section class="mb-section-gap">
+      <div class="flex justify-between items-end mb-12 border-b border-outline-variant/30 pb-4">
+        <h3 class="font-headline-sm text-headline-sm text-primary">Latest Stories</h3>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+        {otherPosts.map(post => (
+          <article class="group cursor-pointer">
+            <a href={`/blog/${post.id}`} class="block">
+              <div class="relative h-64 mb-6 overflow-hidden rounded-lg">
+                <img 
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  alt={post.data.altText} 
+                  src={post.data.mainImage}
+                  loading="lazy"
+                />
+                <div class="absolute top-4 left-4">
+                  <span class="bg-surface/90 text-primary px-3 py-1 rounded-full font-label-md text-xs backdrop-blur-sm shadow-sm">
+                    {post.data.category}
+                  </span>
+                </div>
+              </div>
+            </a>
+            <div class="flex items-center space-x-2 text-on-surface-variant font-label-md text-xs mb-3">
+              <span>{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
+              <span>•</span>
+              <span>{post.data.readTime}</span>
+            </div>
+            <a href={`/blog/${post.id}`} class="block group-hover:text-secondary transition-colors">
+              <h4 class="font-headline-sm text-headline-sm text-primary mb-3 line-clamp-2">{post.data.title}</h4>
+            </a>
+            <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-4">
+              {post.data.description}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Product Callout / Bento Grid Style -->
+    <section class="bg-surface-container-low rounded-xl p-8 md:p-12 shadow-[0_10px_40px_-15px_rgba(27,28,28,0.05)] border border-outline-variant/10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div class="md:col-span-1">
+          <h3 class="font-headline-md text-headline-md text-primary mb-4">Begin Your Practice</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant mb-6">
+            Our signature ceremonial blend, stone-ground in Uji, Japan. The perfect introduction to daily mindfulness.
+          </p>
+          <a class="inline-flex items-center justify-center bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg hover:bg-secondary transition-colors" href="/products/ceremonial-matcha-uji">
+            Shop Signature Matcha
+          </a>
+        </div>
+        <div class="md:col-span-2 grid grid-cols-2 gap-4">
+          <div class="h-48 rounded-lg overflow-hidden relative">
+            <img 
+              class="w-full h-full object-cover" 
+              alt="Sleek minimalist dark glass jar of premium matcha powder." 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHHAuLYM9IOQ9KTtrxePsVfbKGMsjgZic_kAmGVW_-CQ4VpcVQ86Y39qfDFsINZ4TVTE9M7_wzRPeV8xNRiUETOtLAE_7iEafqRQBpzVZWsHf-6wVM0S56PTWzJgPmpqO8eh-eYs7IfIDPS1ly8ErWiq3gehIVa9dXTSMRdy8_Lm1MkmgSFQxOl54dqoeh9MCGwC63PHLt2kNGckPfX29uu7Kb0V5uWnzYbye-GS3u6fkeHbfPgFgmXQ"
+            />
+          </div>
+          <div class="h-48 rounded-lg overflow-hidden relative">
+            <img 
+              class="w-full h-full object-cover" 
+              alt="Crafted bamboo chasen whisk inside ceramic bowl." 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM0ART0yGK_xdqfQX9PX1TaSqsvx1-HQWBt5h__FoWcmeYnImF4YMmKT9ZfTVfrnS6BkVBjUWoWtlTEyp8Wkm-CeOF5HbNH0-pIObe7Ck3AHDlCHbyalFNjh7GQ-gACXQp8FbKymUHhTrHtsKNegrryl4BOurO1ZQa4jIFk7zebDepMOLOj_YmGL95AKfw085eljlWFQdDjUuPEbd_dZsjGoth8Q_9zPbchd6nd1BgzHgSFLuo_ZLRtA"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

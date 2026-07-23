@@ -1,0 +1,80 @@
+---
+interface Props {
+  mainImage: string;
+  thumbnails: string[];
+  altText: string;
+}
+
+const { mainImage, thumbnails, altText } = Astro.props;
+
+// Compile all images (main + thumbnails) to display
+const allImages = [mainImage, ...thumbnails].slice(0, 4); // Keep at most 4
+---
+<div class="flex flex-col gap-unit" id="image-gallery-root">
+  <!-- Main Image Container -->
+  <div class="rounded-lg overflow-hidden aspect-square bg-surface-container-low">
+    <img 
+      id="gallery-main-image" 
+      alt={altText} 
+      class="w-full h-full object-cover rounded-lg transition-all duration-300" 
+      src={mainImage} 
+    />
+  </div>
+  
+  <!-- Thumbnails -->
+  <div class="grid grid-cols-4 gap-unit" id="gallery-thumbnails">
+    {allImages.map((img, idx) => (
+      <div 
+        class={`thumbnail-wrapper rounded-lg overflow-hidden aspect-square bg-surface-container-low cursor-pointer hover:opacity-80 transition-all border-2 ${idx === 0 ? 'border-primary' : 'border-transparent hover:border-outline-variant/30'}`}
+        data-index={idx}
+      >
+        <img 
+          alt={`Thumbnail ${idx + 1}`} 
+          class="w-full h-full object-cover rounded-lg" 
+          src={img} 
+          loading="lazy"
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  function setupGallery() {
+    const mainImg = document.getElementById('gallery-main-image') as HTMLImageElement | null;
+    const thumbs = document.querySelectorAll('.thumbnail-wrapper');
+
+    if (!mainImg || thumbs.length === 0) return;
+
+    thumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const imgEl = thumb.querySelector('img');
+        if (imgEl && mainImg) {
+          const newSrc = imgEl.src;
+          const newAlt = imgEl.alt;
+
+          // Swap src and alt
+          mainImg.src = newSrc;
+          mainImg.alt = newAlt;
+
+          // Remove border from all and add to clicked
+          thumbs.forEach(t => {
+            t.classList.remove('border-primary');
+            t.classList.add('border-transparent');
+            t.classList.add('hover:border-outline-variant/30');
+          });
+
+          thumb.classList.add('border-primary');
+          thumb.classList.remove('border-transparent');
+          thumb.classList.remove('hover:border-outline-variant/30');
+        }
+      });
+    });
+  }
+
+  // Setup on page load
+  setupGallery();
+
+  // Setup on client-side router navigation if needed (for transitions)
+  document.addEventListener('astro:after-swap', setupGallery);
+</script>

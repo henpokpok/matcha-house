@@ -1,0 +1,194 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const blogPosts = await getCollection('blog');
+// Get top 3 blog posts
+const recentPosts = blogPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout
+  title="Zenith Matcha - Premium Japanese Matcha (ชาเขียวญี่ปุ่น)"
+  description="Elevate your daily ritual with premium, authentically sourced Japanese matcha. Experience the harmony of nature and craftsmanship in a cup of pure serenity."
+  keywords="ชาเขียวญี่ปุ่น, Zenith Matcha, มัทฉะเกรดพิธีชงชา, ชาเขียวมัทฉะ, ออร์แกนิค"
+>
+  <!-- Hero Section -->
+  <section class="relative w-full h-[85vh] min-h-[600px] flex items-center justify-center px-margin-mobile md:px-margin-desktop overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        class="w-full h-full object-cover" 
+        alt="A high-quality, close-up shot of a traditional bamboo whisk (chasen) actively whisking vibrant green matcha tea in a rustic, textured ceramic bowl. Steam gently rises from the bowl. The setting is minimal, with soft, diffused natural lighting." 
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8b_1L9HtJFVA34Srvkrt41eYXD9FeKf7nzKvJYV3Oju6COXu67eyLJ_gvrjEAnVf3gAXXchMJcp5DuUs8-HH-M5-C5hGqmxVwS_wsj5VMAw3iW6KNQsV2yRjoKbIeeq0HLheWG58m73A3CXqCmUzMeTzJFGwNZbpeC-CAptyVDTGA95JA6Oj5ldtn7hKVQFHIOO_h0O4R-IJRs4Jc4AFgawEB0fZ001F1XJfOYqDhTo6AAxXCKzfo8g"
+      />
+      <!-- Soft overlay for text contrast -->
+      <div class="absolute inset-0 bg-background/20 backdrop-blur-[2px]"></div>
+    </div>
+    
+    <div class="relative z-10 flex flex-col items-center text-center max-w-3xl">
+      <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-6 text-balance">
+        Zenith in Every Whisk
+      </h1>
+      <p class="font-body-lg text-body-lg text-primary-container mb-10 max-w-xl mx-auto text-balance leading-relaxed">
+        Elevate your daily ritual with premium, authentically sourced Japanese matcha. Experience the harmony of nature and craftsmanship in a cup of pure serenity.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a class="inline-flex items-center justify-center font-label-md text-label-md text-on-primary bg-primary rounded-lg px-8 py-4 hover:opacity-90 transition-opacity" href="/products">
+          Explore Our Collection
+        </a>
+        <a class="inline-flex items-center justify-center font-label-md text-label-md text-primary border border-outline rounded-lg px-8 py-4 hover:bg-surface-container-low transition-colors" href="#about">
+          Discover Our Story
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Story Section -->
+  <section id="about" class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface-container-low scroll-mt-20">
+    <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div class="order-2 md:order-1 relative rounded-lg overflow-hidden ambient-shadow aspect-[4/5]">
+        <img 
+          class="w-full h-full object-cover rounded-lg" 
+          alt="A serene landscape view of a lush, meticulously maintained organic tea farm in Uji, Japan, seen during early morning mist." 
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS4BuWvpIrgXOsYOdUUtKJAriWYHMlsT5H0r5PFp_UeVC3uwSOnC1KtW4n1CS9AGCHy1yUrZ0Gl00zk8e23bYsuNKDdmAMUrudzQ8Q9wumJf41tYEM_AEQpirFIyxeeKcgLaav6w6cxQy76OOK8VlkBaoGxQkca4QpOQulH9GXNi2ZWoBml9uDBNe8J17PJNG2LcfTR_LxOw4zGFp8DLwf-BXyZmSkZKQCQJM_odNQXATocjAEtEakKg"
+        />
+      </div>
+      <div class="order-1 md:order-2 flex flex-col justify-center">
+        <span class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-4">Our Roots</span>
+        <h2 class="font-headline-md text-headline-md text-primary mb-6">Authentic Japanese Sourcing. Organic Purity.</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+          We believe that true quality stems from respect for the earth and tradition. Our <span class="font-semibold text-primary">ชาเขียวญี่ปุ่น</span> is sourced directly from heritage family farms in Uji and Kagoshima, regions renowned for producing the world's finest tea.
+        </p>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-8 leading-relaxed">
+          Every leaf is shade-grown, hand-picked, and stone-ground to preserve its vibrant color, umami flavor, and potent health benefits. We are committed to 100% organic certification, ensuring your daily ritual is as pure as nature intended.
+        </p>
+        <ul class="space-y-4 mb-8">
+          <li class="flex items-center gap-3 text-on-surface-variant font-body-md">
+            <span class="material-symbols-outlined text-secondary text-[20px]" data-weight="fill">eco</span>
+            100% JAS Certified Organic
+          </li>
+          <li class="flex items-center gap-3 text-on-surface-variant font-body-md">
+            <span class="material-symbols-outlined text-secondary text-[20px]" data-weight="fill">terrain</span>
+            Directly Sourced from Uji & Kagoshima
+          </li>
+          <li class="flex items-center gap-3 text-on-surface-variant font-body-md">
+            <span class="material-symbols-outlined text-secondary text-[20px]" data-weight="fill">local_florist</span>
+            Traditional Stone-Ground Processing
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Categories (Bento Grid Style) -->
+  <section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface">
+    <div class="max-w-container-max mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="font-headline-md text-headline-md text-primary mb-4">Curated Offerings</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">
+          Discover the perfect grade for your specific needs, whether for a quiet morning ceremony or an afternoon latte.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[400px]">
+        <!-- Ceremonial Grade (Large Feature) -->
+        <a class="group relative rounded-lg overflow-hidden ambient-shadow md:col-span-2 md:row-span-1 block" href="/products/ceremonial-matcha-uji">
+          <img 
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            alt="Overhead shot of ceremonial grade matcha powder on a dark textured slate surface next to a bamboo scoop." 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV1DeCoMA4950u3ZqPyeOZTJTbLO3o4s8wDXXyJl_2GOjNNgjxv0Iv0DwzvY6OBZxf1admVAJcKlf0nMvUFCsoJd4BA-UAHJvVG5xU9t2saCWqMeUBtRPZA4YKSjOGvmmfS_FxeOU1XSgAiqzgiIUevAmj4B0mysCFQnLlkp-w9LKoqnhnz6J5CdUuP1BDag_dMK9kzGreEhUAxJ1YPAfEZcJf7dCloLS1ZRTYZ-8K3C7uuLWKA_fScQ"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent flex flex-col justify-end p-8">
+            <div class="bg-surface-container/20 backdrop-blur-md rounded-full px-4 py-1 self-start mb-3 border border-white/20">
+              <span class="font-label-md text-label-md text-white text-[12px]">Premium Quality</span>
+            </div>
+            <h3 class="font-headline-sm text-headline-sm text-white mb-2">Ceremonial Grade</h3>
+            <p class="font-body-md text-body-md text-white/90">For the purest sipping experience (Usucha/Koicha).</p>
+          </div>
+        </a>
+        
+        <!-- Culinary Grade -->
+        <a class="group relative rounded-lg overflow-hidden ambient-shadow block" href="/products/organic-culinary-matcha">
+          <img 
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            alt="A beautifully crafted matcha latte in a clear glass on a light wooden table." 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIUOTBsyGz8O3SUqV2vKxuMHoGs_FFyaFojeAD6pDaG7V_WW8BW__9pYM2jAL3CQL9T8rPjpXexsvxduMTtPueiC5LfBvfzju7CidXCBygpAvpXXK-irzxyWK45pEu7lLsNEiaxUtY3Q0so_S4qgdf1OFJUgv7mH7qNgIGX73SiH6S8rYSST11KTu0GivpfA48I45UA-MNlby9mMNacda6xNRyQuc0vaG8zulmoMGRqZRD6aoMMAGsgg"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/10 to-transparent flex flex-col justify-end p-8">
+            <h3 class="font-headline-sm text-headline-sm text-white mb-2">Culinary Grade</h3>
+            <p class="font-body-md text-body-md text-white/90">Ideal for lattes, baking, and smoothies.</p>
+          </div>
+        </a>
+        
+        <!-- Accessories -->
+        <a class="group relative rounded-lg overflow-hidden ambient-shadow md:col-span-3 block h-[300px]" href="/products?filter=accessories">
+          <img 
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            alt="Traditional Japanese matcha accessories neatly arranged on a linen cloth." 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBKgZQ-mtzidLZIIcw680L1v_YxAIQ8-FTxxaPnAho08N_DVKfzmghb-YLWTgvQPe62TbXN0BesKFwRqPxcfBboMiVXyATQPvIyrW4vt-2MoQSYmhdh5hsvE9_BYQ__PwlVl_UrbjqaygNk6B4xOrS6Ph5Q9cnU7nGIaG53VdxKETJsk3KLzVIOYmdp1o7LKGtHgt2TtRF05-61IwsblSotEZIJDNdknONvgvFF3BGGF0r944Dm0a4gw"
+          />
+          <div class="absolute inset-0 bg-primary/40 group-hover:bg-primary/50 transition-colors duration-500 flex flex-col items-center justify-center p-8 text-center">
+            <h3 class="font-headline-md text-headline-md text-white mb-4">Essential Tools</h3>
+            <p class="font-body-md text-body-md text-white/90 max-w-md">Authentic Japanese teaware to elevate your preparation ritual.</p>
+            <span class="mt-6 font-label-md text-label-md text-white border-b border-white pb-1 group-hover:px-2 transition-all">Shop Accessories</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Journal Posts Section -->
+  <section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface-container-low">
+    <div class="max-w-container-max mx-auto">
+      <div class="flex justify-between items-end mb-12 border-b border-outline-variant/30 pb-4">
+        <div>
+          <span class="font-label-md text-label-md text-secondary uppercase tracking-widest">Journal</span>
+          <h2 class="font-headline-md text-headline-md text-primary mt-2">The Matcha Journal</h2>
+        </div>
+        <a class="hidden sm:inline-flex items-center text-primary font-label-md text-label-md border-b border-primary pb-1 hover:text-secondary hover:border-secondary transition-colors" href="/blog">
+          View All Journal Articles <span class="material-symbols-outlined ml-2 text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        {recentPosts.map(post => (
+          <article class="group cursor-pointer">
+            <a href={`/blog/${post.id}`} class="block">
+              <div class="relative h-64 mb-6 overflow-hidden rounded-lg">
+                <img 
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  alt={post.data.altText} 
+                  src={post.data.mainImage}
+                  loading="lazy"
+                />
+                <div class="absolute top-4 left-4">
+                  <span class="bg-surface/90 text-primary px-3 py-1 rounded-full font-label-md text-xs backdrop-blur-sm shadow-sm">
+                    {post.data.category}
+                  </span>
+                </div>
+              </div>
+            </a>
+            <div class="flex items-center space-x-2 text-on-surface-variant font-label-md text-xs mb-3">
+              <span>{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
+              <span>•</span>
+              <span>{post.data.readTime}</span>
+            </div>
+            <a href={`/blog/${post.id}`} class="block group-hover:text-secondary transition-colors">
+              <h4 class="font-headline-sm text-headline-sm text-primary mb-3 line-clamp-2">{post.data.title}</h4>
+            </a>
+            <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-4">
+              {post.data.description}
+            </p>
+          </article>
+        ))}
+      </div>
+      
+      <div class="text-center sm:hidden mt-8">
+        <a class="inline-flex items-center text-primary font-label-md text-label-md border-b border-primary pb-1" href="/blog">
+          View All Journal Articles <span class="material-symbols-outlined ml-2 text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

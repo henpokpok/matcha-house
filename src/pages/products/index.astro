@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import ProductCard from '../../components/ProductCard.astro';
+
+const allProducts = await getCollection('products');
+---
+
+<Layout
+  title="Shop Collection - Zenith Matcha (ชาเขียวมัทฉะ ญี่ปุ่น)"
+  description="Discover our curated selection of premium Japanese matcha and traditional teaware. Crafted for mindfulness and ritual."
+  keywords="ชาเขียวมัทฉะ ญี่ปุ่น, มัทฉะเกรดพิธีชงชา, อุปกรณ์ชงชาญี่ปุ่น, Zenith Matcha, ผงมัทฉะ"
+>
+  <div class="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop pb-section-gap">
+    <!-- Header -->
+    <header class="py-16 md:py-24 text-center">
+      <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-4">Shop Collection</h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+        Discover our curated selection of premium Japanese matcha and traditional teaware. Crafted for mindfulness and ritual.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-2 text-sm text-outline">
+        <span class="font-semibold text-primary">ชาเขียวมัทฉะ ญี่ปุ่น</span> • 
+        <span>มัทฉะเกรดพิธีชงชา</span> • 
+        <span>อุปกรณ์ชงชาญี่ปุ่น</span>
+      </div>
+    </header>
+
+    <!-- Filters (Bento-style Tabs) -->
+    <section class="mb-12">
+      <div class="flex flex-wrap justify-center gap-4" id="category-filters">
+        <button 
+          class="filter-btn px-6 py-2 rounded-full font-label-md text-label-md transition-all bg-primary text-on-primary"
+          data-category="all"
+        >
+          All
+        </button>
+        <button 
+          class="filter-btn px-6 py-2 rounded-full font-label-md text-label-md transition-all bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest"
+          data-category="Ceremonial Grade"
+        >
+          Ceremonial Grade
+        </button>
+        <button 
+          class="filter-btn px-6 py-2 rounded-full font-label-md text-label-md transition-all bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest"
+          data-category="Culinary Grade"
+        >
+          Culinary Grade
+        </button>
+        <button 
+          class="filter-btn px-6 py-2 rounded-full font-label-md text-label-md transition-all bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest"
+          data-category="Tea Accessories"
+        >
+          Tea Accessories
+        </button>
+      </div>
+    </section>
+
+    <!-- Product Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="products-grid">
+      {allProducts.map(product => (
+        <div class="product-item-container" data-category={product.data.category}>
+          <ProductCard
+            slug={product.id}
+            title={product.data.title}
+            priceString={product.data.priceString}
+            tag={product.data.tag}
+            description={product.data.description}
+            mainImage={product.data.mainImage}
+            altText={product.data.altText}
+          />
+        </div>
+      ))}
+    </section>
+  </div>
+</Layout>
+
+<script>
+  function setupProductFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const productContainers = document.querySelectorAll('.product-item-container');
+
+    function applyFilter(category: string) {
+      // Toggle button states
+      filterButtons.forEach(btn => {
+        const btnCat = btn.getAttribute('data-category');
+        if (btnCat === category) {
+          btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant', 'hover:bg-surface-container-highest');
+          btn.classList.add('bg-primary', 'text-on-primary');
+        } else {
+          btn.classList.add('bg-surface-container-high', 'text-on-surface-variant', 'hover:bg-surface-container-highest');
+          btn.classList.remove('bg-primary', 'text-on-primary');
+        }
+      });
+
+      // Filter products
+      productContainers.forEach(container => {
+        const itemCat = container.getAttribute('data-category');
+        if (category === 'all' || itemCat === category) {
+          container.classList.remove('hidden');
+        } else {
+          container.classList.add('hidden');
+        }
+      });
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category') || 'all';
+        applyFilter(category);
+      });
+    });
+
+    // Check URL query parameters (e.g. ?filter=accessories)
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+    if (filterParam) {
+      if (filterParam.toLowerCase() === 'accessories') {
+        applyFilter('Tea Accessories');
+      } else if (filterParam.toLowerCase() === 'ceremonial') {
+        applyFilter('Ceremonial Grade');
+      } else if (filterParam.toLowerCase() === 'culinary') {
+        applyFilter('Culinary Grade');
+      }
+    }
+  }
+
+  // Run on page load
+  setupProductFilters();
+  
+  // Re-run on client-side router navigation
+  document.addEventListener('astro:after-swap', setupProductFilters);
+</script>

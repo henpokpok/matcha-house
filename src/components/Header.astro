@@ -1,0 +1,61 @@
+---
+const lineOaLink = "https://line.me/R/ti/p/@zenithmatcha"; // Target LINE OA link
+const currentPath = Astro.url.pathname;
+---
+<nav class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-300 ease-in-out">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center h-20">
+    <!-- Brand -->
+    <a class="font-display-lg text-[18px] md:text-headline-sm tracking-tighter text-primary hover:opacity-80 transition-opacity" href="/">
+      ZENITH MATCHA
+    </a>
+
+    <!-- Navigation Links (Desktop) -->
+    <div class="hidden md:flex gap-8 items-center">
+      <a class={`font-label-md text-label-md transition-colors duration-300 ${currentPath === '/' ? 'text-primary font-bold border-b border-primary pb-1' : 'text-on-surface-variant hover:text-primary'}`} href="/">Home</a>
+      <a class={`font-label-md text-label-md transition-colors duration-300 ${currentPath.startsWith('/products') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-on-surface-variant hover:text-primary'}`} href="/products">Shop</a>
+      <a class={`font-label-md text-label-md transition-colors duration-300 ${currentPath.startsWith('/blog') ? 'text-primary font-bold border-b border-primary pb-1' : 'text-on-surface-variant hover:text-primary'}`} href="/blog">Blog</a>
+      <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="/#about">About</a>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-4">
+      <a class="hidden md:inline-flex items-center justify-center font-label-md text-label-md text-on-primary bg-primary rounded-lg px-6 py-3 hover:opacity-80 transition-opacity duration-300 ease-in-out" href={lineOaLink} target="_blank" rel="noopener noreferrer">
+        Order via LINE OA
+      </a>
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden text-primary p-2 focus:outline-none" aria-label="Toggle menu">
+        <span class="material-symbols-outlined text-headline-sm">menu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-background border-b border-outline-variant/30 py-6 px-margin-mobile flex flex-col gap-4 transition-all duration-300">
+    <a class={`font-label-md text-label-md py-2 ${currentPath === '/' ? 'text-primary font-bold' : 'text-on-surface-variant'}`} href="/">Home</a>
+    <a class={`font-label-md text-label-md py-2 ${currentPath.startsWith('/products') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} href="/products">Shop</a>
+    <a class={`font-label-md text-label-md py-2 ${currentPath.startsWith('/blog') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} href="/blog">Blog</a>
+    <a class="font-label-md text-label-md py-2 text-on-surface-variant" href="/#about" id="mobile-about-link">About</a>
+    <a class="inline-flex items-center justify-center font-label-md text-label-md text-on-primary bg-primary rounded-lg py-3 mt-2 text-center" href={lineOaLink} target="_blank" rel="noopener noreferrer">
+      Order via LINE OA
+    </a>
+  </div>
+</nav>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileAboutLink = document.getElementById('mobile-about-link');
+
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+
+  if (mobileAboutLink && mobileMenu) {
+    mobileAboutLink.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+  }
+</script>

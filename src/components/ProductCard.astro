@@ -1,0 +1,40 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  priceString: string;
+  tag: string;
+  description: string;
+  mainImage: string;
+  altText: string;
+}
+
+const { slug, title, priceString, tag, description, mainImage, altText } = Astro.props;
+---
+<div class="group relative bg-surface rounded-lg p-6 ambient-shadow transition-transform duration-300 hover:-translate-y-1">
+  <a href={`/products/${slug}`} class="block">
+    <div class="aspect-square mb-6 rounded-lg overflow-hidden bg-surface-container-low relative">
+      <img 
+        class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 ease-out" 
+        alt={altText}
+        src={mainImage}
+        loading="lazy"
+      />
+      <div class="absolute top-4 left-4 bg-secondary/15 text-secondary px-3 py-1 rounded-full text-xs font-label-md backdrop-blur-sm">
+        {tag}
+      </div>
+    </div>
+  </a>
+  <div class="space-y-2">
+    <a href={`/products/${slug}`} class="block hover:opacity-80 transition-opacity">
+      <h3 class="font-headline-sm text-headline-sm text-primary">{title}</h3>
+    </a>
+    <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">{description}</p>
+    <div class="flex justify-between items-center pt-4">
+      <span class="font-label-md text-label-md text-primary text-lg">{priceString}</span>
+      <a href={`/products/${slug}`} class="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity font-label-md text-label-md border-b border-primary/30 pb-0.5">
+        View Details <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</div>

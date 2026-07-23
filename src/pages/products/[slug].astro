@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import ImageGallery from '../../components/ImageGallery.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+// Get static paths for all products
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map(product => ({
+    params: { slug: product.id },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const { Content } = await render(product);
+
+// Fetch related products (exclude current)
+const allProducts = await getCollection('products');
+const relatedProducts = allProducts
+  .filter(p => p.id !== product.id)
+  .slice(0, 4);
+
+const lineOaLink = "https://line.me/R/ti/p/@zenithmatcha";
+---
+
+<Layout
+  title={`${product.data.title} - Zenith Matcha`}
+  description={product.data.description}
+  keywords={product.id === 'ceremonial-matcha-uji' ? 'ผงชาเขียวมัทฉะ ออร์แกนิค 100%, ชาเขียวมัทฉะ, มัทฉะเกรดพิธีชงชา, Zenith Matcha' : `${product.data.title}, อุปกรณ์ชงชา, มัทฉะ`}
+  type="product"
+  productSchema={{
+    name: product.data.title,
+    description: product.data.description,
+    image: product.data.mainImage,
+    price: product.data.price,
+    priceCurrency: 'THB',
+    availability: 'InStock'
+  }}
+>
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-12 pb-section-gap">
+    <!-- Breadcrumbs -->
+    <div class="mb-12">
+      <Breadcrumbs
+        items={[
+          { label: 'Shop', href: '/products' },
+          { label: product.data.category, href: `/products?filter=${product.data.category.toLowerCase().includes('ceremonial') ? 'ceremonial' : product.data.category.toLowerCase().includes('culinary') ? 'culinary' : 'accessories'}` },
+          { label: product.data.title }
+        ]}
+      />
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+      <!-- Left Column: Image Gallery -->
+      <ImageGallery
+        mainImage={product.data.mainImage}
+        thumbnails={product.data.thumbnails}
+        altText={product.data.altText}
+      />
+
+      <!-- Right Column: Product Details -->
+      <div class="flex flex-col justify-start">
+        <!-- Chips/Tags -->
+        <div class="flex gap-2 mb-6">
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label-md text-[12px]">
+            {product.data.category}
+          </span>
+          {product.data.location && (
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label-md text-[12px]">
+              {product.data.location}
+            </span>
+          )}
+        </div>
+
+        <!-- Title -->
+        <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-4 leading-tight">
+          {product.data.title}
+        </h1>
+
+        <!-- SEO Keyword Subtitle (Only on Ceremonial Matcha) -->
+        {product.id === 'ceremonial-matcha-uji' && (
+          <p class="font-body-md text-body-md text-on-surface-variant mb-6 opacity-70">
+            ผงชาเขียวมัทฉะ ออร์แกนิค 100%
+          </p>
+        )}
+
+        <!-- Price -->
+        <div class="font-headline-md text-headline-md text-primary mb-8 font-medium">
+          {product.data.priceString}
+          {product.data.tag === 'Ceremonial' || product.data.tag === 'Culinary' ? (
+            <span class="font-body-md text-body-md text-on-surface-variant font-normal">/ 30g</span>
+          ) : null}
+        </div>
+
+        <!-- Description -->
+        <div class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-prose space-y-4">
+          <Content />
+        </div>
+
+        <!-- LINE OA CTA Link -->
+        <a 
+          class="inline-flex items-center justify-center gap-3 bg-primary text-on-primary font-label-md text-label-md py-4 px-8 rounded-full hover:bg-primary/90 transition-colors duration-300 w-full md:w-auto shadow-[0_0_20px_rgba(27,28,28,0.05)] text-center" 
+          href={lineOaLink} 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <span class="material-symbols-outlined text-[20px]">chat</span>
+          สั่งซื้อผ่าน LINE OA
+        </a>
+
+        <!-- Trust Signals -->
+        <div class="mt-8 flex flex-col gap-3">
+          <div class="flex items-center gap-3 text-on-surface-variant font-body-md text-body-md">
+            <span class="material-symbols-outlined text-secondary" data-weight="fill">eco</span>
+            <span>100% Organic Certified Sourcing</span>
+          </div>
+          <div class="flex items-center gap-3 text-on-surface-variant font-body-md text-body-md">
+            <span class="material-symbols-outlined text-secondary" data-weight="fill">local_shipping</span>
+            <span>Free shipping within Thailand</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separation -->
+    <div class="h-px w-full bg-outline-variant/30 my-section-gap"></div>
+
+    <!-- How to Brew Section (Bento/Card layout) -->
+    <section class="mb-section-gap">
+      <div class="text-center mb-16">
+        <h2 class="font-headline-md text-headline-md text-primary mb-4">The Ritual: How to Brew</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">
+          Embrace the Wabi-sabi philosophy. Take a moment to slow down and prepare your matcha with intention.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <!-- Step 1 -->
+        <div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center shadow-[0_0_20px_rgba(27,28,28,0.02)] transition-transform duration-300 hover:-translate-y-1">
+          <div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-secondary text-[32px]">filter_alt</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-primary mb-3">1. Sift</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Sift 2g (approx. 1 tsp) of matcha powder into your chawan to remove any clumps, ensuring a smooth texture.
+          </p>
+        </div>
+        <!-- Step 2 -->
+        <div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center shadow-[0_0_20px_rgba(27,28,28,0.02)] transition-transform duration-300 hover:-translate-y-1">
+          <div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-secondary text-[32px]">water_drop</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-primary mb-3">2. Whisk</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Add 60ml of hot water (80°C/176°F). Use a bamboo whisk (chasen) in a brisk 'W' motion until a fine froth forms.
+          </p>
+        </div>
+        <!-- Step 3 -->
+        <div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center shadow-[0_0_20px_rgba(27,28,28,0.02)] transition-transform duration-300 hover:-translate-y-1">
+          <div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-secondary text-[32px]">self_improvement</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-primary mb-3">3. Enjoy</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Sip slowly. Appreciate the vibrant color, the complex aroma, and the moment of stillness.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Separation -->
+    <div class="h-px w-full bg-outline-variant/30 my-section-gap"></div>
+
+    <!-- Related Products Section -->
+    <section>
+      <h2 class="font-headline-md text-headline-md text-primary mb-12">Complete Your Ritual</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        {relatedProducts.map(p => (
+          <div class="group cursor-pointer">
+            <a href={`/products/${p.id}`} class="block">
+              <div class="rounded-lg overflow-hidden aspect-[4/5] bg-surface-container-low mb-4 relative shadow-[0_0_20px_rgba(27,28,28,0.02)]">
+                <img 
+                  alt={p.data.title} 
+                  class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500 ease-out" 
+                  src={p.data.mainImage}
+                  loading="lazy"
+                />
+              </div>
+            </a>
+            <a href={`/products/${p.id}`} class="block hover:opacity-80 transition-opacity">
+              <h3 class="font-label-md text-label-md text-primary mb-1">{p.data.title}</h3>
+            </a>
+            <p class="font-body-md text-body-md text-on-surface-variant">{p.data.priceString}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>

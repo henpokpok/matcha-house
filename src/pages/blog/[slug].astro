@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+// Get static paths for all blog posts
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Fetch other articles for quick reads at the bottom
+const allPosts = await getCollection('blog');
+const otherArticles = allPosts
+  .filter(p => p.id !== post.id)
+  .slice(0, 2);
+---
+
+<Layout
+  title={`${post.data.title} - The Matcha Journal`}
+  description={post.data.description}
+  keywords={`${post.data.title}, ผงมัทฉะ ยี่ห้อไหนดี, Zenith Matcha`}
+  type="article"
+  ogImage={post.data.mainImage}
+>
+  <article class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop py-12">
+    <!-- Header -->
+    <header class="mb-12 text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center space-x-2 mb-6">
+        <span class="bg-primary-fixed/20 text-primary px-3 py-1 rounded-full font-label-md text-xs uppercase tracking-wider">
+          {post.data.category}
+        </span>
+        <span class="text-on-surface-variant font-label-md text-xs">{post.data.readTime}</span>
+      </div>
+      <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-6 leading-tight">
+        {post.data.title}
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+        {post.data.description}
+      </p>
+      
+      <div class="mt-8 flex justify-center items-center gap-3 text-sm text-outline border-t border-b border-outline-variant/30 py-4">
+        <span>By {post.data.author}</span>
+        <span>•</span>
+        <span>{post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+      </div>
+    </header>
+
+    <!-- Main Image -->
+    <div class="rounded-lg overflow-hidden h-[300px] md:h-[500px] mb-12 shadow-[0_20px_40px_-20px_rgba(23,42,30,0.08)]">
+      <img 
+        class="w-full h-full object-cover" 
+        alt={post.data.altText} 
+        src={post.data.mainImage} 
+      />
+    </div>
+
+    <!-- Article Body (Tailwind Prose integration) -->
+    <div class="prose prose-lg max-w-3xl mx-auto prose-headings:font-headline-md prose-headings:text-primary prose-p:font-body-md prose-p:text-on-surface-variant prose-p:leading-relaxed prose-a:text-primary prose-a:font-semibold prose-strong:text-primary prose-ul:font-body-md prose-ul:text-on-surface-variant prose-li:my-2">
+      <Content />
+    </div>
+
+    <!-- Separation -->
+    <div class="h-px w-full bg-outline-variant/30 my-section-gap"></div>
+
+    <!-- Related Articles -->
+    {otherArticles.length > 0 && (
+      <section class="max-w-3xl mx-auto">
+        <h3 class="font-headline-sm text-headline-sm text-primary mb-8 text-center">Continue Reading</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+          {otherArticles.map(article => (
+            <a href={`/blog/${article.id}`} class="group block cursor-pointer">
+              <div class="relative h-48 mb-4 overflow-hidden rounded-lg">
+                <img 
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  alt={article.data.altText} 
+                  src={article.data.mainImage}
+                  loading="lazy"
+                />
+              </div>
+              <h4 class="font-label-md text-label-md text-primary mb-1 group-hover:text-secondary transition-colors line-clamp-1">
+                {article.data.title}
+              </h4>
+              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">
+                {article.data.description}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+</Layout>
