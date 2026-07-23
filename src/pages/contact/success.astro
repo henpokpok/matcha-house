@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="ขอบคุณสำหรับข้อมูล - Zenith Matcha"
+  description="ขอบคุณที่ติดต่อ Zenith Matcha เจ้าหน้าที่จะติดต่อกลับและบริการคุณโดยเร็วที่สุด"
+>
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-24 flex items-center justify-center min-h-[60vh]">
+    <div class="bg-surface rounded-xl p-8 md:p-16 text-center max-w-xl w-full ambient-shadow border border-outline-variant/20">
+      <!-- Icon Flourish -->
+      <div class="w-20 h-20 rounded-full bg-secondary/15 text-secondary flex items-center justify-center mx-auto mb-8">
+        <span class="material-symbols-outlined text-[40px]" data-weight="fill">check_circle</span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="font-display-lg text-headline-md md:text-display-lg text-primary mb-4">
+        ขอบคุณสำหรับการติดต่อ
+      </h1>
+
+      <!-- Message -->
+      <p class="font-body-lg text-body-lg text-on-surface-variant mb-4 leading-relaxed">
+        เราได้รับข้อมูลการติดต่อของคุณเรียบร้อยแล้ว
+      </p>
+      <p class="font-body-md text-body-md text-on-surface-variant/80 mb-10 leading-relaxed">
+        เจ้าหน้าที่ผู้เชี่ยวชาญชาเขียวจาก Zenith Matcha จะดำเนินการติดต่อกลับทาง LINE OA หรืออีเมลโดยเร็วที่สุดเพื่อมอบบริการที่ดีที่สุดให้แก่คุณ
+      </p>
+
+      <!-- Primary Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/" 
+          class="inline-flex items-center justify-center font-label-md text-label-md text-on-primary bg-primary rounded-lg px-8 py-4 hover:opacity-90 transition-opacity text-center"
+        >
+          กลับสู่หน้าหลัก
+        </a>
+        <a 
+          href="/products" 
+          class="inline-flex items-center justify-center font-label-md text-label-md text-primary border border-outline rounded-lg px-8 py-4 hover:bg-surface-container-low transition-colors text-center"
+        >
+          เลือกชมคอลเลกชันสินค้า
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

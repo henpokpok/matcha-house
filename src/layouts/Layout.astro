@@ -4,6 +4,9 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
+// Google Tag Manager Configuration
+const GTM_ID = 'GTM-XXXXXXX';
+
 interface Props {
   title: string;
   description: string;
@@ -30,6 +33,14 @@ const { title, description, keywords, ogImage, type, productSchema } = Astro.pro
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     
+    <!-- Google Tag Manager -->
+    <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','${GTM_ID}');`}></script>
+    <!-- End Google Tag Manager -->
+
     <!-- SEO component -->
     <SEO
       title={title}
@@ -47,6 +58,17 @@ const { title, description, keywords, ogImage, type, productSchema } = Astro.pro
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   </head>
   <body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden min-h-screen flex flex-col pt-20">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe 
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} 
+        height="0" 
+        width="0" 
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <Header />
     <main class="flex-grow">
       <slot />
